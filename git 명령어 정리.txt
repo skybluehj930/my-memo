@@ -1,0 +1,255 @@
+===========<파일 생성 및 확인 명령어>============
+
+- pwd 
+현재 위치하고 있는 디렉토리 확인
+
+- cd {변경 원하는 디렉토리}
+디렉토리 변경. 뒤에 한 칸 띄고 ' ..' 을 붙이면 상위 디렉토리로 올라간다.
+
+- dir(Windows) == ls(Linux) -al(ls와 같이 사용 되는 옵션 숨김 파일, 디렉토리 자세히 출력) gitbash 둘다 가능.
+디렉토리에 있는 파일과 하위 디렉토리 목록을 확인.
+
+- mkdir {생성하는 디렉토리 이름}
+디렉터리 생성.
+
+- vim {만들 파일 이름.형식(생성 및 수정)}
+명령어 시스템에서 모두 사용할 수 있는 에디터
+=에디터 사용 기능 단축키 
+i : 글을 쓰거나 수정할 수 있게 한다. 
+esc : 파일을 수정할 수 없는 상태로 만듬.
+wq : 파일을 저장하고 동시에 에디터에서 빠져나온다.
+
+- cat {파일 이름.형식}
+파일의 내용을 볼 수 있다. 
+
+- cp {복제 대상 파일 이름.형식}  {복제할 파일 이름.형식}
+
+- q ' : ' 상태에사 빠져나가는 단축키
+
+- rm {파일이름.형식}
+파일을 삭제한다. 
+
+
+===========<버전 관리 초기 셋팅>===========
+- git config --global user.name {유저 이름}
+버전을 만든 사람의 이름을 설정한다. (최초 한번만 설정)
+
+- git config --global user.email {유저 이메일}
+버전을 만든 사람의 이메일을 설정한다. (최초 한번만 설정)
+
+
+===========<버전 관리 명령어>===========
+
+- git --version
+현재 git의 버전을 확인.
+
+- init
+git 로컬 저장소 생성.
+=옵션 기능
+--bare : 작업을 할 수 없고 저장소 역할로만 사용할 수 있게하는 옵션.
+직접 원격 저장소를 만들때 사용하는 옵션 
+
+- git status
+git add를 통해 추적(tracking) 되지 않은 변경사항을 조회.
+
+- git add {파일이름}
+변경된 파일을 stage에 올린다. 이를 commit 대기 상태라 하며 'stage area' 라 부른다.
+stage는 commit을 대기하는 파일들의 저장소이다. 
+이전에 버전 관리 시스템들은 수정된 파일을 모두 commit 할 수밖에 없었지만 git은 수정된 파일들을 
+선택해서 commit 할 수 있도록 add라는 기능을 제공한다.
+=옵션 기능 
+--all 또는 한칸 띄고  { .}  : 모든 파일을 스테이지에 올린다. 
+-p : modified 된 파일의 수정 부분을 단위별로 나누어서 추가할지 안 할지를 물어본다. 
+보여지는 변경사항의 하나의 단위를 hunk라고 부른다. 이 hunk 단위로 추가할지 말지를 정할 수 있다.
+-u : 수정/삭제된 파일만 stage에 올린다.
+ 
+- git commit -m "커밋메시지"
+staging된 파일을 커밋한다.
+=옵션 기능
+-am : add와 commit을 한 번에 할 수 있다. 다만 한 번도 add되지 않은 버전은 적용 되지 않는다.
+--amend : 최신 커밋 메세지를 변경할 수 있다. 
+
+- git log
+commit한 이력을 확인 할 수 있다.
+=옵션기능
+-p : commit한 버전 간에 소스의 차이점을 알려준다.
+---전버전, +++현재 버전이며,  --- /dev/null은 이전에 버전이 없었다 생겼다는 것을 의미한다.
+--reverse : 과거 순부터 로그를 거꾸로 볼 수 있다.
+
+- git reflog 
+사용자가 커밋이나 리셋 등. 어떤 작업을 수행 했는지 이력을 확인할 수 있다.
+
+- git diff 
+이전 버전과 현재 수정된 작업 내역을 비교할 수 있다.
+commit전에 변경된 작업을 리뷰할 수 있는 기능으로 많이 활용 된다.
+또한 working directory와 index의 차이를 알아볼 수 있다.
+working directory(작업공간), index(add), repository(commit)
+
+- git diff {commit ID}..{다른 commit ID} 
+지정된 버전 간 소스의 차이점을 알려준다.
+
+- git reset 
+stage 영역을 초기화 한다.
+옵션 기능 default는 mixed
+working directory(작업공간), index(add), repository(commit)
+--solf : repository(commit)만 reset 한다.
+--mixed : index(add), repository(commit)를 reset 한다.
+--hard :  working directory(작업공간), index(add), repository(commit) reset 한다.
+
+- git reset --hard {commit ID} 
+앞에 있는 버전들은 삭제되고 지정된 commit 버전으로 돌아간다.
+원격저장소에 배포하기 전에만 해야되며 하더라도 로컬 저장소에서만 해야한다. 
+{commit 버전 id}가 default일 때는 최신 commit으로 돌아간다.
+
+- git reset --hard ORIG_HEAD
+reset을 취소한다. 복구 기능.
+옵션 기능 default는 mixed
+--solf : repository(commit)만 reset 한다.
+--mixed : index(add), repository(commit)를 reset 한다.
+--hard :  working directory(작업공간), index(add), repository(commit) reset 한다.
+git은  merge나 reset등 위험한 작업을 할 때 이전 상태로 돌아갈 수 있도록 ORIG_HEAD에 버전을 저장한다. 
+
+- git checkout {commit ID}
+HEAD가 지정된 커밋 버전에 위치하게 된다. 
+
+- git revert
+
+
+===========<원격 저장소 명령어>===========
+
+- git clone {저장소 주소}
+원격 저장소에 소스를 복제해서 로컬 저장소를 만든다.
+
+- git remote add origin(저장소 별칭 보통 origin라 한다.) {저장소 주소}
+로컬 저장소와 원격 저장소를 연결한다. 
+
+- git remote -v
+로컬 저장소와 원격 저장소의 연결 상태를 확인할 수 있다. 
+
+- git remote remove origin(저장소 별칭)
+연결된 원격 저장소를 지운다.
+
+- git push -u origin master
+현재 브랜치에 작업을 원격 저장소에 master브랜치로 업로드한다. 
+한 번 연결이 되었다면 -u origin master 제외해도 된다. push를 하기전에 pull을 습관화 한다.
+
+- git pull origin master
+원격 저장소 master 브랜치에서 소스를 내려받아 병합(merge)한다.
+한 번 연결이 되었다면 origin master 제외해도 된다.
+
+- git fetch
+원격 저장소에서 연결된 브랜치를 다운만 받고 병합은 하지 않는다.
+=pull과 fetch 차이 
+pull은 원격 저장소에 소스를 호출하는 브랜치에 병합을 하고
+fetch는 병합을 하지 않고 가져오기만 하는 것이다.
+fetch는 굳이 병합을 하지 않고도 log나 diff를 활용해서 로컬 저장소와 원격 저장소의 
+버전이나 소스의 차이점을 확인해 보는 용도로 사용된다.
+
+- git diff HEAD origin/master
+로컬 저장소에 HEAD가 현자 위치하고 있는 commit과 
+내려받은 원격 저장소의 소스 차이점을 확인할 수 있다. 
+
+- git merge origin/master
+로컬 저장소에 fetch한 원격 저장소에 master브랜치를 병합한다. 
+
+
+===========<브랜치>===========
+
+- git branch
+현재 위치하고 있는 branch를 확인할 수 있다.
+
+- git branch {생성할 브랜치 이름}
+브랜치를 생성한다.
+
+- git checkout {브랜치 이름}
+지정한 이름에 브랜치로 위치를 변경한다. 
+checkout 뒤에 -b를 붙이면 브랜치를 생성함과 동시에 생성한 브랜치로 변경한다.
+
+- git log --branches --graph --decorate --oneline
+브랜치 상태를 간결하게 원라인 그래프 형태로 확인 가능.
+--branches : 모든 브랜치 로그 확인.
+--decorate : 로그에 브랜치명을 표시. 
+--graph : 브랜치 그래프 형태로 보기.
+--oneline : 그래프를 원라인으로 간결하게 표시.
+--all : 모든 브랜치를 보여준다. 
+
+- stree 
+현재 디렉토리에 저장소가 소스트리라는 git gui툴로 ui 표현된다.
+
+- git log {a 브랜치}..{b 브랜치}
+a 브랜치에는 없는 b브랜치의 커밋을 확인한다.
+log뒤에 -p를 붙이면 소스까지 확인할 수 있다. 
+
+- git diff {a 브랜치}..{b 브랜치}
+지정된 각각의 브랜치에 현상태를 비교할 수 있다.
+
+- git merge {병합할 브랜치 이름}
+현재 위치하고 있는 브랜치에 지정된 브랜치를 가져와서 병합한다.
+merge를 완료하면 vim에디터 방식으로 커밋 메세지를 작성하도록 나오며, 작성한 다음 
+wq단축키를 활용해 저장하고 나온다.
+병합할 브랜치가 아무런 수정이 없었을 때에 merge를 하게 되면 이를 fast-forwarde라 한다.
+이를 빨리감기라 표현하며 병합할 브랜치의 head를 병합 지정된 브랜치로 옮기기만 하는 것이며, 
+별도의 커밋을 생성하지 않는다. 이렇게 브랜치는 패스트포워드 방식과 아닌 방식 2가지 방식이 있다.
+
+- git branch -d {브랜치 이름}
+지정된 브랜치를 삭제한다.
+
+- git stash 
+작업을 다 마무리(commit) 하지 않고 다른 branch로 넘어가야 하는 상황일 때 
+임시로 작업을 숨겨서 넘어간 브랜치에 영향을 주지 않도록 하는 기능이다.  
+add를 통해 최소한 버전관리를 하고 있는 작업만 stash가 가능하다.
+--help 옵션을 뒤에 붙여 여러가지 기능을 알아볼 수 있다.
+
+- git stash apply
+숨겨 놓았던 최신 작업을 불러온다. 
+
+- git stash list
+숨겨 놓은 stash 목록을 불러온다.
+
+- git stash drop
+가장 최근에 작업한 stash 목록을 제거한다.
+
+- git stash pop
+최근에 숨겨놓은 stash를 apply하고 동시에 drop한다.
+
+- branch 충돌
+같은 파일에서 브랜치 시점에 같은 코드를 수정하면 충돌이 발생해 병합을 사용자에게 위임한다.
+
+
+===========<태그>===========
+
+- branch와 tag의 원리는 동일하다.
+다만 branch는 가리키는 commit이 변하고 tag는 변하지 않는다.
+
+- git tag {1.0.0(태그 이름)} {commit ID 또는 브랜치 이름(현재 HAED가 가리키는 commit 적용)}
+특정 commit을 고정적으로 가르키는 tag를 만든다. 
+위와 같은 방식을 light weight tag라 한다.
+
+- git tag -a {태그 이름} -m "태그 메세지" {commit ID 또는 브랜치 이름(현재 HAED가 가리키는 commit 적용)}
+light weight tag보다 좀더 디테일한 이력을 가지는 태그를 만드는 기능.
+위와 같은 방식을 annotated tag라 한다. 
+
+- git tag 
+만들어진 tag목록을 확인할 수 있다. 
+log를 통해 어떤 태그가 commit을 가리키는지도 확인 가능하다.
+
+- git checkout {태그 이름}
+지정한 태그가 가리키는 commit으로 되돌아간다. 
+
+- git tag -v {태그 이름}
+지정된 태그에 자세한 이력이 나온다.
+
+- git tag -d {태그 이름}
+지정된 태그를 삭제한다.
+
+- git push --tags
+만드어진 태그를 원격 저장소 releases에 업로드한다.
+git push -u origin master명령어로 원격 저장소에 업로드 연결이 되어 있어야 실행된다.
+
+
+
+-로컬과 원격 저장소 변경 
+https://codeday.me/ko/qa/20190324/142345.html
+
+일반인도 사용하는 간단한 버전관리 시스템 
+드롭박스, 구글 드라이브 
