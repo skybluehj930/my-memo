@@ -1,0 +1,166 @@
+0. 디렉터리(폴더) 생성
+   이름은 영어(한글 X)
+
+  공유폴더
+	
+  \\211.238.142.46
+
+
+1. 개발 환경 설정
+	- STS Down
+	  https://github.com/spring-projects/toolsuite-distribution/wiki/Spring-Tool-Suite-3
+
+	- STS 환경 설정
+	  1) Encoding(UTF-8)
+		Geeral 	-> workspace
+		Web 	-> css, html, jsp
+
+	  2) Web Browser
+		window -> Web Browser -> Chrome
+
+	  3) WAS(Web Server)	
+		- 내장 server 사용
+
+
+2. Project 생성
+
+  1)  File -> new -> Spring Legacy Project
+  2)  Project Name 입력
+  3) Spring MVC template 선택
+  4) 패키지명 3단계 (com.iu.컨텍스트명)
+
+3. Project 기본 설정
+
+   pom.xml(변경)
+	<properties>
+		<java-version>1.8</java-version>
+		<org.springframework-version>4.3.2.RELEASE</org.springframework-version>
+		....
+
+	----------------------------------------------------------------------------------------------------
+
+	 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+
+	     ......	
+
+
+4. Test 환경 설정
+
+    1) JUNIT 테스트 도구
+
+    2) API (pom.xml)
+	<!-- Test 변경-->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency> 
+		
+	<!-- spring-test 추가 -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-test</artifactId>
+	    <version>${org.springframework-version}</version>
+	    <scope>test</scope>
+	</dependency>
+
+
+    3) Junit Test case 생성
+	- src/test/java
+	- new -> Junit Test Case 
+	- error : 프로젝트 우클릭 -> maven -> update project -> Ok
+	- 클래스 선언부
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/spring/**/*-context.xml")
+	
+	- Test 용 메서드 선언
+	- 메서드 선언부
+	@Test
+
+
+	
+
+
+5. DI(Defendency Injection, 의존성 주입)
+	- 개발자의 객체 생성 코드 작업을 최소화
+	- 객체 생성과 주입
+	- Bean	: Spring에서 관리하는 객체
+	- Container : Bean의 생명주기를 관리 (Spring Container)
+
+   1) XML
+	객체 생성
+	<bean class="풀패키지명.클래스명" id="참조변수명">
+	    주입(setter)
+	    <property name="setter명" value="primitive type" or ref="참조변수명" />
+	    주입(생성자, index)
+	   <constructor-arg index="순서번호" value="primitive type" or ref="참조변수명" />
+	     주입(생성자, type)
+	   <constructor-arg type="매개변수의 DataType" value="primitive type" or ref="참조변수명" />	
+	     주입(생성자, name)
+	   <constructor-arg name="매개변수 변수명" value="primitive type" or ref="참조변수명" />		
+	</bean>
+	 
+	
+
+  2) Annotation
+	
+	a. 객체 생성
+	    클래스의 선언부 위에 
+	    SingleTon 	: 객체가 딱 한개만 생성
+	- @Controller 	: 객체 생성, Controller 역할 부여
+	- @Service	: 객체 생성, Service 역할 부여
+	- @Repository	: 객체 생성, Repository(DAO) 역할 부여
+	- @Component	: 객체 생성, 그외 나머지 역할
+	-- 공통 
+	- @Qualifier("클래스이름")
+
+
+
+	b. 객체 주입
+	- @Autowired	: 멤버변수 선언부, setter 메서드 선언부, 생성자 선언부
+			: Type으로 찾아서 Inject
+			: Spring 에서 제공
+	   -- @Qualifier("클래스이름") : 같은 Type이면 이름으로 찾아서 Inject
+
+	- @Inject		: 멤버변수 선언부, setter 메서드 선언부, 생성자 선언부
+			: Type으로 찾아서 Inject
+			: Java 에서 제공
+
+	- @Resource(name=""): 멤버변수 선언부, setter 메서드 선언부
+			: Name으로 찾아서 Inject	
+
+
+
+	@PostConstruct	: 객체 생성 후 초기화 메서드
+	@PreDestroy	: 객체 소멸 직전 메서드
+
+	
+	
+Web Programming
+
+	회원관리
+
+	게시판
+	공지사항
+	QnA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
