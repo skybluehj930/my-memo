@@ -88,11 +88,12 @@
 	
 
 
-5. DI(Defendency Injection, 의존성 주입)
+5. DI(Defendency Injection, 의존성 주입)  와 IOC
 	- 개발자의 객체 생성 코드 작업을 최소화
 	- 객체 생성과 주입
 	- Bean	: Spring에서 관리하는 객체
 	- Container : Bean의 생명주기를 관리 (Spring Container)
+	- IOC :  개발자가 아닌  spring으로 객체를 생성하고 주입
 
    1) XML
 	객체 생성
@@ -140,6 +141,190 @@
 
 	@PostConstruct	: 객체 생성 후 초기화 메서드
 	@PreDestroy	: 객체 소멸 직전 메서드
+
+
+--------------------------------------------------------------------------------------
+
+
+Spring Bean Configure 파일 생성 과 관리
+
+1. Spring Bean Configure 파일 생성
+
+    우클릭 -> new -> Spring bean configuration ...
+
+    2) 파일의 이름은 ***-context.xml 로 생성
+
+    3) 파일의 위치
+
+	a) /WEB-INF/spring/**/***-context.xml
+
+	b) /src/main/resources/**/***-context.xml
+
+    4) 파일 적용
+
+	a) Web.xml에 등록
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		/WEB-INF/spring/root-context.xml
+		
+		/WEB-INF/spring/sample-context.xml
+		
+		classpath:sample-context.xml
+		
+		 classpath:*-context.xml
+
+		</param-value>
+	</context-param>
+
+	b) <import > 태그 사용	
+	
+	***-context.xml
+
+	<import resource="classpath:sample-context.xml"/>
+	<import resource="classpath:*-context.xml"/>
+	<import resource="/WEB-INF/spring/sample-context.xml"/>
+	<import resource="/WEB-INF/spring/*-context.xml"/>
+
+
+Properties 파일 생성과 관리
+
+
+-------------------------------------------------------------------------------------------
+
+MyBatis Framework 
+
+1. API ( pom.xml )
+
+   - mybatis
+   - mybatis-spring
+   - spring-jdbc
+   - ojdbc
+
+
+		<!-- mybatis -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.4.6</version>
+		</dependency>
+		
+		<!-- mybatis-spring -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis-spring</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
+		
+		<!-- spring-jdbc -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <!-- 현재 사용하는 spring version과 동일하게 -->
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.oracle.ojdbc/ojdbc8 -->
+		<dependency>
+		    <groupId>com.oracle.ojdbc</groupId>
+		    <artifactId>ojdbc8</artifactId>
+		    <version>19.3.0.0</version>
+		</dependency>
+
+2. ***
+
+
+----------------------------------------------------------------------------------------------------------------------------
+	Controller 작성
+
+	POJO(Plain Old Java Object) 기반
+
+	1. Java 클래스 생성
+	2. 클래스 선언부
+		@Controller
+		@RequestMapping(value="URL주소")
+	3. 요청 처리를 하는 메서드 선언
+		3_1 : 메서드 선언부
+			@RequestMapping(value="URL주소", method=메서드형식)
+
+		3_2 : 메서드 매개변수 선언부 (주로 파라미터나, 필요한 데이터를 받을 때 사용)
+
+		     parameter 처리
+			1) HttpServletRequest request	
+			2) parameter의 이름과 동일한 변수명, 동일한 데이터타입 선언
+			3) bean (VO, DTO)를 선언 
+
+
+
+
+
+
+
+
+
+	ex) 회원관리	
+	회원가입		/member/memberJoin
+	로그인		/member/memberLogin
+	회원정보
+	로그아웃
+	탈퇴
+
+
+
+
+---------------------------------------------------------------------------
+	요청의 구성
+
+	URL 
+	method 형식
+		1) GET	
+			- parameter가 head(주소창에 노출)에 담겨서 전송
+			- 작은 데이터만 가능
+			- 보안이 요구 되지 않는 요청
+		2) POST
+			- parameter가 body(주소창에 노출 X)에 담겨서 전송
+			- 큰 데이터를 전송 할 때
+			- 보안이 요구 될 때 
+
+
+		서버로 전송 요청 방식 
+		1. 주소창에 직접 URL 주소		: GET
+		2. <a href="URL주소">		: GET
+		3. javascript에 location.href="URL주소" : GET
+		4. form 태그 사용
+		    <form action="URL주소" method="get">
+		    <form action="URL주소" method="post">
+
+		5. ajax
+
+
+----------------------------------------------------------------------------------------------------
+
+	WAS
+
+	클라이언트에서 요청이 발생 하면 
+	요청의 모든 정보를 Request 객체를 생성하고(Response 객체도 같이 생성) 저장
+
+	클라이언트로 보낼 데이터는 Response에 담아서 전송
+
+	전송이 끝나면 만들어진 Request 객체와 Response는 소멸
+
+
+
+
+
+
+	
+	
+Web Programming
+
+	회원관리
+
+	게시판
+	공지사항
+	QnA
+
 
 	
 	
